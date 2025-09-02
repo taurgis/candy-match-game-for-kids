@@ -9,7 +9,7 @@
 
   font-display: swap;
 
-  src: url('/candy-match-game-for-kids/src/fonts/fredoka-one.woff2') format('woff2');
+  src: url('./fonts/fredoka-one.woff2') format('woff2');
 }
 
 /* Nunito - Bold (700) */
@@ -23,7 +23,7 @@
 
   font-display: swap;
 
-  src: url('/candy-match-game-for-kids/src/fonts/nunito-700.woff') format('woff');
+  src: url('./fonts/nunito-700.woff') format('woff');
 }
 
 /* Nunito - Black (900) */
@@ -37,7 +37,7 @@
 
   font-display: swap;
 
-  src: url('/candy-match-game-for-kids/src/fonts/nunito-900.woff') format('woff');
+  src: url('./fonts/nunito-900.woff') format('woff');
 }
 
 *, ::before, ::after {
