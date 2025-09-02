@@ -5,6 +5,7 @@ import Leaderboard from './components/Leaderboard';
 import Modal from './components/Modal';
 import ProfileSelection from './components/ProfileSelection';
 import MainMenu from './components/MainMenu';
+import InstallPrompt from './components/InstallPrompt';
 import { useGameLogic } from './hooks/useGameLogic';
 import type { LeaderboardEntry, Profile } from './types';
 import { initAudio, playSound, startMusic, setMusicMuted } from './lib/audioManager';
@@ -259,6 +260,7 @@ const Game: React.FC = () => {
   return (
     <div className={containerClass}>
       {renderView()}
+      <InstallPrompt />
       {isGameOver && view === 'game' && (
         <Modal title={t('gameOverTitle')} onConfirm={handleGameOverConfirmed} confirmText={t('mainMenu')}>
           <p className="text-xl text-gray-700">{t('finalScore')} <span className="font-bold text-2xl text-pink-500">{score}</span>.</p>
