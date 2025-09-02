@@ -1,0 +1,26 @@
+/* Fredoka One - Regular */
+@font-face {
+  font-family: 'Fredoka One';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/candy-match-game-for-kids/src/fonts/fredoka-one.woff2') format('woff2');
+}
+
+/* Nunito - Bold (700) */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/candy-match-game-for-kids/src/fonts/nunito-700.woff') format('woff');
+}
+
+/* Nunito - Black (900) */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('/candy-match-game-for-kids/src/fonts/nunito-900.woff') format('woff');
+}
