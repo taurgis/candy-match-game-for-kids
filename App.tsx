@@ -228,25 +228,29 @@ const Game: React.FC = () => {
             return null;
         }
         return (
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-8 p-4">
-            <GameBoard 
-                board={board} 
-                setBoard={setBoard} 
-                decrementMoves={decrementMoves} 
-                chainReactionCount={chainReactionCount}
-                activeSpecialEffects={activeSpecialEffects}
-            />
-            <Scoreboard 
-              score={score} 
-              level={level} 
-              movesLeft={movesLeft} 
-              onBackToMenu={() => handleMenuClick(backToMenu)}
-              onSwitchProfile={() => handleMenuClick(handleSwitchProfile)}
-              playerName={currentProfile.name}
-              playerAvatar={currentProfile.avatar}
-              isMuted={isMuted}
-              onToggleMute={handleToggleMute}
-            />
+          <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-8 p-2 md:p-4 min-h-screen md:min-h-0 max-h-screen md:max-h-none overflow-hidden md:overflow-visible">
+            <div className="flex-shrink-0">
+              <GameBoard 
+                  board={board} 
+                  setBoard={setBoard} 
+                  decrementMoves={decrementMoves} 
+                  chainReactionCount={chainReactionCount}
+                  activeSpecialEffects={activeSpecialEffects}
+              />
+            </div>
+            <div className="flex-shrink-0 w-full md:w-auto">
+              <Scoreboard 
+                score={score} 
+                level={level} 
+                movesLeft={movesLeft} 
+                onBackToMenu={() => handleMenuClick(backToMenu)}
+                onSwitchProfile={() => handleMenuClick(handleSwitchProfile)}
+                playerName={currentProfile.name}
+                playerAvatar={currentProfile.avatar}
+                isMuted={isMuted}
+                onToggleMute={handleToggleMute}
+              />
+            </div>
           </div>
         );
       default:
@@ -255,7 +259,7 @@ const Game: React.FC = () => {
     }
   };
 
-  const containerClass = "min-h-screen bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 flex items-center justify-center p-4";
+  const containerClass = "min-h-screen bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 flex items-center justify-center p-2 md:p-4";
 
   return (
     <div className={containerClass}>

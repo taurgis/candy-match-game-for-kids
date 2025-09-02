@@ -5,6 +5,7 @@ import SpecialEffectsLayer from './SpecialEffectsLayer';
 import { BOARD_WIDTH, BOARD_HEIGHT } from '../constants';
 import { playSound } from '../lib/audioManager';
 import { useLanguage } from '../context/LanguageContext';
+import { useResponsive } from '../hooks/useResponsive';
 
 interface GameBoardProps {
     board: Board;
@@ -14,9 +15,12 @@ interface GameBoardProps {
     activeSpecialEffects: { type: 'row' | 'column'; index: number }[];
 }
 
-const PIECE_SIZE = 56; // Corresponds to md:w-14
-const GAP_SIZE = 4; // Corresponds to gap-1
+const PIECE_SIZE = 56; // Desktop size
+const PIECE_SIZE_MOBILE = 36; // Even smaller for iPhone 7 (375px width)
+const GAP_SIZE = 4; // Desktop gap
+const GAP_SIZE_MOBILE = 2; // Smaller gap for mobile
 const TOTAL_PIECE_SIZE = PIECE_SIZE + GAP_SIZE;
+const TOTAL_PIECE_SIZE_MOBILE = PIECE_SIZE_MOBILE + GAP_SIZE_MOBILE;
 
 const GameBoard: React.FC<GameBoardProps> = ({ board, setBoard, decrementMoves, chainReactionCount, activeSpecialEffects }) => {
     const [startCell, setStartCell] = useState<{ x: number; y: number } | null>(null);
@@ -24,7 +28,10 @@ const GameBoard: React.FC<GameBoardProps> = ({ board, setBoard, decrementMoves, 
     const [invalidSwap, setInvalidSwap] = useState<({ x: number; y: number }[]) | null>(null);
     const [swappingCandies, setSwappingCandies] = useState<{ from: { x: number; y: number }, to: { x: number; y: number } }[] | null>(null);
     const [comboMessage, setComboMessage] = useState<string | null>(null);
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragStartPos, setDragStartPos] = useState<{ x: number; y: number } | null>(null);
     const { t } = useLanguage();
+    const { isMobile } = useResponsive();
 
     useEffect(() => {
         if (chainReactionCount > 1) {
@@ -60,13 +67,54 @@ const GameBoard: React.FC<GameBoardProps> = ({ board, setBoard, decrementMoves, 
         return false;
     }
     
-    const handlePointerDown = (x: number, y: number) => {
+    const handlePointerDown = (x: number, y: number, event: React.PointerEvent) => {
         if (invalidSwap || swappingCandies) return;
+        
         setStartCell({ x, y });
+        setEndCell(null);
+        setIsDragging(true);
+        setDragStartPos({ x: event.clientX, y: event.clientY });
+        
+        // Prevent default to avoid scrolling on mobile
+        event.preventDefault();
+        event.stopPropagation();
+    };
+
+    const handlePointerMove = (event: React.PointerEvent) => {
+        if (!isDragging || !startCell || !dragStartPos) return;
+        
+        const currentPos = { x: event.clientX, y: event.clientY };
+        const deltaX = currentPos.x - dragStartPos.x;
+        const deltaY = currentPos.y - dragStartPos.y;
+        
+        // Minimum drag distance to register as a swipe (in pixels)
+        const minDragDistance = isMobile ? 15 : 20;
+        
+        if (Math.abs(deltaX) > minDragDistance || Math.abs(deltaY) > minDragDistance) {
+            // Determine direction based on larger delta
+            let targetX = startCell.x;
+            let targetY = startCell.y;
+            
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                // Horizontal swipe
+                targetX = startCell.x + (deltaX > 0 ? 1 : -1);
+            } else {
+                // Vertical swipe
+                targetY = startCell.y + (deltaY > 0 ? 1 : -1);
+            }
+            
+            // Check bounds
+            if (targetX >= 0 && targetX < BOARD_WIDTH && targetY >= 0 && targetY < BOARD_HEIGHT) {
+                setEndCell({ x: targetX, y: targetY });
+            }
+        }
+        
+        event.preventDefault();
+        event.stopPropagation();
     };
 
     const handlePointerEnter = (x: number, y: number) => {
-        if (startCell) {
+        if (startCell && !isMobile) {
             setEndCell({ x, y });
         }
     };
@@ -75,6 +123,8 @@ const GameBoard: React.FC<GameBoardProps> = ({ board, setBoard, decrementMoves, 
         if (!startCell || !endCell) {
             setStartCell(null);
             setEndCell(null);
+            setIsDragging(false);
+            setDragStartPos(null);
             return;
         }
 
@@ -89,6 +139,8 @@ const GameBoard: React.FC<GameBoardProps> = ({ board, setBoard, decrementMoves, 
         if (dx + dy !== 1) { // Not an adjacent swap
             setStartCell(null);
             setEndCell(null);
+            setIsDragging(false);
+            setDragStartPos(null);
             return;
         }
 
@@ -154,6 +206,8 @@ const GameBoard: React.FC<GameBoardProps> = ({ board, setBoard, decrementMoves, 
                 decrementMoves();
                 setStartCell(null);
                 setEndCell(null);
+                setIsDragging(false);
+                setDragStartPos(null);
                 return;
             }
         }
@@ -165,6 +219,8 @@ const GameBoard: React.FC<GameBoardProps> = ({ board, setBoard, decrementMoves, 
             decrementMoves();
             setStartCell(null);
             setEndCell(null);
+            setIsDragging(false);
+            setDragStartPos(null);
             return;
         }
 
@@ -187,6 +243,8 @@ const GameBoard: React.FC<GameBoardProps> = ({ board, setBoard, decrementMoves, 
                 decrementMoves();
                 setStartCell(null);
                 setEndCell(null);
+                setIsDragging(false);
+                setDragStartPos(null);
                 return;
             }
         }
@@ -217,18 +275,24 @@ const GameBoard: React.FC<GameBoardProps> = ({ board, setBoard, decrementMoves, 
 
         setStartCell(null);
         setEndCell(null);
+        setIsDragging(false);
+        setDragStartPos(null);
     };
 
-    const boardWidth = BOARD_WIDTH * TOTAL_PIECE_SIZE - GAP_SIZE;
-    const boardHeight = BOARD_HEIGHT * TOTAL_PIECE_SIZE - GAP_SIZE;
+    const currentPieceSize = isMobile ? PIECE_SIZE_MOBILE : PIECE_SIZE;
+    const currentGapSize = isMobile ? GAP_SIZE_MOBILE : GAP_SIZE;
+    const currentTotalPieceSize = isMobile ? TOTAL_PIECE_SIZE_MOBILE : TOTAL_PIECE_SIZE;
+    
+    const boardWidth = BOARD_WIDTH * currentTotalPieceSize - currentGapSize;
+    const boardHeight = BOARD_HEIGHT * currentTotalPieceSize - currentGapSize;
 
     return (
-        <div className="bg-pink-100/70 p-4 rounded-2xl shadow-2xl border-4 border-white relative">
+        <div className="bg-pink-100/70 p-2 md:p-4 rounded-2xl shadow-2xl border-4 border-white relative max-w-fit">
              {comboMessage && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
                     <div 
                         key={comboMessage} /* Use key to re-trigger animation */
-                        className="text-7xl font-display text-white animate-combo-popup" 
+                        className="text-4xl md:text-7xl font-display text-white animate-combo-popup" 
                         style={{textShadow: '0 0 10px rgba(233, 30, 99, 0.8), 0 0 20px rgba(233, 30, 99, 0.8), 3px 3px 0 #e91e63, 6px 6px 0 #ff9800'}}
                     >
                         {comboMessage}
@@ -240,13 +304,23 @@ const GameBoard: React.FC<GameBoardProps> = ({ board, setBoard, decrementMoves, 
                 className="relative" 
                 style={{ width: boardWidth, height: boardHeight }}
                 onPointerUp={handlePointerUp}
-                onPointerLeave={() => { if (!swappingCandies) { setStartCell(null); setEndCell(null); } }}
+                onPointerMove={handlePointerMove}
+                onPointerLeave={() => { 
+                    if (!swappingCandies) { 
+                        setStartCell(null); 
+                        setEndCell(null); 
+                        setIsDragging(false);
+                        setDragStartPos(null);
+                    } 
+                }}
             >
                 {board.flatMap((row, y) => 
                     row.map((candy, x) => {
                         if (!candy) return null;
                         
                         const isShaking = invalidSwap?.some(cell => cell.x === x && cell.y === y);
+                        const isSelected = startCell?.x === x && startCell?.y === y;
+                        const isTarget = endCell?.x === x && endCell?.y === y;
 
                         const swapInfo = swappingCandies?.find(s => s.from.x === x && s.from.y === y);
                         const visualX = swapInfo ? swapInfo.to.x : x;
@@ -259,7 +333,11 @@ const GameBoard: React.FC<GameBoardProps> = ({ board, setBoard, decrementMoves, 
                                 x={visualX}
                                 y={visualY}
                                 isShaking={isShaking || false}
-                                onPointerDown={() => handlePointerDown(x, y)}
+                                isSelected={isSelected}
+                                isTarget={isTarget}
+                                pieceSize={currentPieceSize}
+                                totalPieceSize={currentTotalPieceSize}
+                                onPointerDown={(e) => handlePointerDown(x, y, e)}
                                 onPointerEnter={() => handlePointerEnter(x, y)}
                             />
                         )
