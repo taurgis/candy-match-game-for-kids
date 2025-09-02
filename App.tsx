@@ -8,7 +8,7 @@ import MainMenu from './components/MainMenu';
 import InstallPrompt from './components/InstallPrompt';
 import { useGameLogic } from './hooks/useGameLogic';
 import type { LeaderboardEntry, Profile } from './types';
-import { initAudio, playSound, startMusic, setMusicMuted } from './lib/audioManager';
+import { initAudio, playSound, startMusic, setMusicMuted, setSoundsMuted } from './lib/audioManager';
 import { getTargetScoreForLevel } from './constants';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 
@@ -36,7 +36,8 @@ const Game: React.FC = () => {
   });
   
   const [isAudioReady, setIsAudioReady] = useState(false);
-  const [isMuted, setIsMuted] = useState(() => localStorage.getItem('sweetSwapMuted') === 'true');
+  const [isMusicMuted, setIsMusicMuted] = useState(() => localStorage.getItem('sweetSwapMusicMuted') === 'true');
+  const [isSoundsMuted, setIsSoundsMuted] = useState(() => localStorage.getItem('sweetSwapSoundsMuted') === 'true');
   const { t } = useLanguage();
 
   const currentProfile = allProfiles.find(p => p.id === currentProfileId);
@@ -98,19 +99,32 @@ const Game: React.FC = () => {
   // Start music when audio is ready and we are on a screen that should have music
   useEffect(() => {
     if (isAudioReady && view !== 'profile_selection') {
-      if (!isMuted) {
+      if (!isMusicMuted) {
         startMusic();
       }
-      // Always set the mute state to ensure consistency
-      setMusicMuted(isMuted);
     }
-  }, [isAudioReady, view, isMuted]);
+  }, [isAudioReady, view, isMusicMuted]);
+
+  // Set mute states when audio is ready or states change
+  useEffect(() => {
+    if (isAudioReady) {
+      setMusicMuted(isMusicMuted);
+      setSoundsMuted(isSoundsMuted);
+    }
+  }, [isAudioReady, isMusicMuted, isSoundsMuted]);
   
-  const handleToggleMute = () => {
-    const newMutedState = !isMuted;
-    setIsMuted(newMutedState);
-    localStorage.setItem('sweetSwapMuted', String(newMutedState));
+  const handleToggleMusicMute = () => {
+    const newMutedState = !isMusicMuted;
+    setIsMusicMuted(newMutedState);
+    localStorage.setItem('sweetSwapMusicMuted', String(newMutedState));
     playSound('click');
+  };
+
+  const handleToggleSoundsMute = () => {
+    const newMutedState = !isSoundsMuted;
+    setIsSoundsMuted(newMutedState);
+    localStorage.setItem('sweetSwapSoundsMuted', String(newMutedState));
+    // Don't play a sound here since we're muting/unmuting sounds
   };
 
   const handleMenuClick = (action: () => void) => {
@@ -206,8 +220,10 @@ const Game: React.FC = () => {
                     onStartGame={() => handleMenuClick(startGame)}
                     onShowLeaderboard={() => handleMenuClick(() => setView('leaderboard'))}
                     onSwitchProfile={() => handleMenuClick(handleSwitchProfile)}
-                    isMuted={isMuted}
-                    onToggleMute={handleToggleMute}
+                    isMusicMuted={isMusicMuted}
+                    isSoundsMuted={isSoundsMuted}
+                    onToggleMusicMute={handleToggleMusicMute}
+                    onToggleSoundsMute={handleToggleSoundsMute}
                 />
             );
         }
@@ -243,8 +259,10 @@ const Game: React.FC = () => {
                 onSwitchProfile={() => handleMenuClick(handleSwitchProfile)}
                 playerName={currentProfile.name}
                 playerAvatar={currentProfile.avatar}
-                isMuted={isMuted}
-                onToggleMute={handleToggleMute}
+                isMusicMuted={isMusicMuted}
+                isSoundsMuted={isSoundsMuted}
+                onToggleMusicMute={handleToggleMusicMute}
+                onToggleSoundsMute={handleToggleSoundsMute}
               />
             </div>
           </div>

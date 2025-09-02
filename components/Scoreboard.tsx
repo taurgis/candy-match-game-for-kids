@@ -12,8 +12,10 @@ interface ScoreboardProps {
     onSwitchProfile: () => void;
     playerName: string;
     playerAvatar: string;
-    isMuted: boolean;
-    onToggleMute: () => void;
+    isMusicMuted: boolean;
+    isSoundsMuted: boolean;
+    onToggleMusicMute: () => void;
+    onToggleSoundsMute: () => void;
 }
 
 const StatBox: React.FC<{ title: string; value: string | number, color: string, icon?: string }> = ({ title, value, color, icon }) => (
@@ -27,7 +29,7 @@ const StatBox: React.FC<{ title: string; value: string | number, color: string, 
 );
 
 
-const Scoreboard: React.FC<ScoreboardProps> = ({ score, level, movesLeft, onBackToMenu, onSwitchProfile, playerName, playerAvatar, isMuted, onToggleMute }) => {
+const Scoreboard: React.FC<ScoreboardProps> = ({ score, level, movesLeft, onBackToMenu, onSwitchProfile, playerName, playerAvatar, isMusicMuted, isSoundsMuted, onToggleMusicMute, onToggleSoundsMute }) => {
     const targetScore = getTargetScoreForLevel(level);
     const progress = Math.min((score / targetScore) * 100, 100);
     const { t } = useLanguage();
@@ -65,11 +67,18 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ score, level, movesLeft, onBack
             <div className="hidden md:flex justify-center items-center gap-2 md:gap-4 my-1 md:my-2">
               <LanguageSwitcher />
               <button
-                  onClick={onToggleMute}
+                  onClick={onToggleMusicMute}
                   className="w-7 h-7 md:w-10 md:h-10 text-base md:text-2xl rounded-full transition-transform transform hover:scale-110 flex items-center justify-center shadow-sm bg-white"
-                  aria-label={isMuted ? "Unmute music" : "Mute music"}
+                  aria-label={isMusicMuted ? "Unmute music" : "Mute music"}
               >
-                  {isMuted ? '🔇' : '🎵'}
+                  {isMusicMuted ? '🔇' : '🎵'}
+              </button>
+              <button
+                  onClick={onToggleSoundsMute}
+                  className="w-7 h-7 md:w-10 md:h-10 text-base md:text-2xl rounded-full transition-transform transform hover:scale-110 flex items-center justify-center shadow-sm bg-white"
+                  aria-label={isSoundsMuted ? "Unmute sounds" : "Mute sounds"}
+              >
+                  {isSoundsMuted ? '🔇' : '🔊'}
               </button>
             </div>
 

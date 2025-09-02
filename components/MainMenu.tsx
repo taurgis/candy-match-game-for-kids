@@ -10,11 +10,13 @@ interface MainMenuProps {
     onStartGame: () => void;
     onShowLeaderboard: () => void;
     onSwitchProfile: () => void;
-    isMuted: boolean;
-    onToggleMute: () => void;
+    isMusicMuted: boolean;
+    isSoundsMuted: boolean;
+    onToggleMusicMute: () => void;
+    onToggleSoundsMute: () => void;
 }
 
-const MainMenu: React.FC<MainMenuProps> = ({ profile, onContinueGame, onStartGame, onShowLeaderboard, onSwitchProfile, isMuted, onToggleMute }) => {
+const MainMenu: React.FC<MainMenuProps> = ({ profile, onContinueGame, onStartGame, onShowLeaderboard, onSwitchProfile, isMusicMuted, isSoundsMuted, onToggleMusicMute, onToggleSoundsMute }) => {
     const [showInstructions, setShowInstructions] = useState(false);
     const savedGameExists = !!profile?.gameState;
     const { t } = useLanguage();
@@ -62,11 +64,18 @@ const MainMenu: React.FC<MainMenuProps> = ({ profile, onContinueGame, onStartGam
                             <div className="flex justify-center items-center gap-2 md:gap-4 mt-1 md:mt-2">
                               <LanguageSwitcher />
                               <button
-                                  onClick={onToggleMute}
+                                  onClick={onToggleMusicMute}
                                   className="w-8 h-8 md:w-10 md:h-10 text-lg md:text-2xl rounded-full transition-transform transform hover:scale-110 flex items-center justify-center shadow-sm bg-white"
-                                  aria-label={isMuted ? "Unmute music" : "Mute music"}
+                                  aria-label={isMusicMuted ? "Unmute music" : "Mute music"}
                               >
-                                  {isMuted ? '🔇' : '🎵'}
+                                  {isMusicMuted ? '🔇' : '🎵'}
+                              </button>
+                              <button
+                                  onClick={onToggleSoundsMute}
+                                  className="w-8 h-8 md:w-10 md:h-10 text-lg md:text-2xl rounded-full transition-transform transform hover:scale-110 flex items-center justify-center shadow-sm bg-white"
+                                  aria-label={isSoundsMuted ? "Unmute sounds" : "Mute sounds"}
+                              >
+                                  {isSoundsMuted ? '🔇' : '🔊'}
                               </button>
                             </div>
                         </div>
