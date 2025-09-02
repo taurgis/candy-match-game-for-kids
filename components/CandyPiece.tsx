@@ -17,9 +17,9 @@ interface CandyPieceProps {
 }
 
 const PIECE_SIZE = 56; // Default size for desktop
-const PIECE_SIZE_MOBILE = 36; // Smaller size for mobile (iPhone 7 compatible)
+const PIECE_SIZE_MOBILE = 32; // Smaller size for mobile (iPhone 7 height compatible)
 const GAP_SIZE = 4; // Corresponds to gap-1
-const GAP_SIZE_MOBILE = 2; // Smaller gap for mobile
+const GAP_SIZE_MOBILE = 1; // Minimal gap for mobile
 const TOTAL_PIECE_SIZE = PIECE_SIZE + GAP_SIZE;
 const TOTAL_PIECE_SIZE_MOBILE = PIECE_SIZE_MOBILE + GAP_SIZE_MOBILE;
 

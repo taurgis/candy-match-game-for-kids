@@ -228,7 +228,7 @@ const Game: React.FC = () => {
             return null;
         }
         return (
-          <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-8 p-2 md:p-4 min-h-screen md:min-h-0 max-h-screen md:max-h-none overflow-hidden md:overflow-visible">
+          <div className="flex flex-col md:flex-row items-center justify-start md:justify-center gap-1 md:gap-8 p-1 md:p-4 min-h-screen">
             <div className="flex-shrink-0">
               <GameBoard 
                   board={board} 
@@ -259,7 +259,7 @@ const Game: React.FC = () => {
     }
   };
 
-  const containerClass = "min-h-screen bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 flex items-center justify-center p-2 md:p-4";
+  const containerClass = "min-h-screen bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 flex items-start md:items-center justify-center p-1 md:p-4";
 
   return (
     <div className={containerClass}>

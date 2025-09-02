@@ -16,9 +16,9 @@ interface GameBoardProps {
 }
 
 const PIECE_SIZE = 56; // Desktop size
-const PIECE_SIZE_MOBILE = 36; // Even smaller for iPhone 7 (375px width)
+const PIECE_SIZE_MOBILE = 32; // Even smaller for iPhone 7 height constraints
 const GAP_SIZE = 4; // Desktop gap
-const GAP_SIZE_MOBILE = 2; // Smaller gap for mobile
+const GAP_SIZE_MOBILE = 1; // Minimal gap for mobile
 const TOTAL_PIECE_SIZE = PIECE_SIZE + GAP_SIZE;
 const TOTAL_PIECE_SIZE_MOBILE = PIECE_SIZE_MOBILE + GAP_SIZE_MOBILE;
 
@@ -287,12 +287,12 @@ const GameBoard: React.FC<GameBoardProps> = ({ board, setBoard, decrementMoves, 
     const boardHeight = BOARD_HEIGHT * currentTotalPieceSize - currentGapSize;
 
     return (
-        <div className="bg-pink-100/70 p-2 md:p-4 rounded-2xl shadow-2xl border-4 border-white relative max-w-fit">
+        <div className="bg-pink-100/70 p-1 md:p-4 rounded-xl md:rounded-2xl shadow-2xl border-2 md:border-4 border-white relative max-w-fit">
              {comboMessage && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
                     <div 
                         key={comboMessage} /* Use key to re-trigger animation */
-                        className="text-4xl md:text-7xl font-display text-white animate-combo-popup" 
+                        className="text-3xl md:text-7xl font-display text-white animate-combo-popup" 
                         style={{textShadow: '0 0 10px rgba(233, 30, 99, 0.8), 0 0 20px rgba(233, 30, 99, 0.8), 3px 3px 0 #e91e63, 6px 6px 0 #ff9800'}}
                     >
                         {comboMessage}
