@@ -98,16 +98,13 @@ const Game: React.FC = () => {
   // Start music when audio is ready and we are on a screen that should have music
   useEffect(() => {
     if (isAudioReady && view !== 'profile_selection') {
-      startMusic();
-    }
-  }, [isAudioReady, view]);
-  
-  // Apply mute state whenever it changes or when audio becomes ready
-  useEffect(() => {
-    if (isAudioReady) {
+      if (!isMuted) {
+        startMusic();
+      }
+      // Always set the mute state to ensure consistency
       setMusicMuted(isMuted);
     }
-  }, [isMuted, isAudioReady]);
+  }, [isAudioReady, view, isMuted]);
   
   const handleToggleMute = () => {
     const newMutedState = !isMuted;
