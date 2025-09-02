@@ -42,7 +42,20 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ score, level, movesLeft, onBack
                 </div>
             </div>
             
-            <StatBox title={t('score')} value={score} color="bg-green-400 border-green-600" icon="⭐" />
+            {/* Mobile: Side by side score and moves */}
+            <div className="flex gap-1 md:hidden">
+                <div className="flex-1">
+                    <StatBox title={t('score')} value={score} color="bg-green-400 border-green-600" icon="⭐" />
+                </div>
+                <div className="flex-1">
+                    <StatBox title={t('movesLeft')} value={movesLeft} color="bg-blue-400 border-blue-600" icon="✋" />
+                </div>
+            </div>
+            
+            {/* Desktop: Separate rows */}
+            <div className="hidden md:block">
+                <StatBox title={t('score')} value={score} color="bg-green-400 border-green-600" icon="⭐" />
+            </div>
             
             <div>
                 <p className="text-xs md:text-xl font-bold text-gray-600">{t('goal')} {targetScore}</p>
@@ -54,9 +67,11 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ score, level, movesLeft, onBack
                 </div>
             </div>
 
-            <StatBox title={t('movesLeft')} value={movesLeft} color="bg-blue-400 border-blue-600" icon="✋" />
+            <div className="hidden md:block">
+                <StatBox title={t('movesLeft')} value={movesLeft} color="bg-blue-400 border-blue-600" icon="✋" />
+            </div>
             
-            <div className="flex justify-center items-center gap-2 md:gap-4 my-1 md:my-2">
+            <div className="hidden md:flex justify-center items-center gap-2 md:gap-4 my-1 md:my-2">
               <LanguageSwitcher />
               <button
                   onClick={onToggleMute}
@@ -67,7 +82,7 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ score, level, movesLeft, onBack
               </button>
             </div>
 
-             <button onClick={() => { playSound('click'); onSwitchProfile(); }} className="mt-1 md:mt-4 text-base md:text-2xl font-display bg-purple-400 text-white py-1 md:py-3 px-3 md:px-8 rounded-full shadow-lg transform hover:scale-105 active:scale-95 transition-transform duration-150 border-b-2 md:border-b-8 border-purple-600 active:border-b-2 flex items-center justify-center gap-2 md:gap-3">
+             <button onClick={() => { playSound('click'); onSwitchProfile(); }} className="hidden md:flex mt-1 md:mt-4 text-base md:text-2xl font-display bg-purple-400 text-white py-1 md:py-3 px-3 md:px-8 rounded-full shadow-lg transform hover:scale-105 active:scale-95 transition-transform duration-150 border-b-2 md:border-b-8 border-purple-600 active:border-b-2 items-center justify-center gap-2 md:gap-3">
                 <span>{t('switchProfile')}</span>
             </button>
             <button onClick={() => { playSound('click'); onBackToMenu(); }} className="text-sm md:text-xl font-display bg-red-400 text-white py-1 md:py-2 px-2 md:px-6 rounded-full shadow-lg transform hover:scale-105 active:scale-95 transition-transform duration-150 border-b-2 md:border-b-4 border-red-600 active:border-b-2 flex items-center justify-center gap-1 md:gap-3">
