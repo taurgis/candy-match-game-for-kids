@@ -1,0 +1,6 @@
+defaults
+> 0.2%
+not dead
+not op_mini all
+ios_saf >= 13.4
+safari >= 13.1

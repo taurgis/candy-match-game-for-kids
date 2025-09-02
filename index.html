@@ -15,6 +15,11 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="application-name" content="Sweet Swap" />
     
+    <!-- Safari iOS 15.8 Compatibility -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/icon-152x152.png" />
@@ -37,6 +42,42 @@
       }
       h1, h2, h3, .font-display {
         font-family: 'Fredoka One', cursive;
+      }
+      
+      /* Safari iOS 15.8 Compatibility Fixes */
+      @supports not (height: 100dvh) {
+        .min-h-screen {
+          min-height: 100vh;
+        }
+      }
+      
+      /* Grid fallbacks for older Safari */
+      @supports not (display: grid) {
+        .grid {
+          display: flex;
+          flex-wrap: wrap;
+        }
+        .grid-cols-3 > * {
+          flex: 0 0 33.333%;
+        }
+        .grid-cols-2 > * {
+          flex: 0 0 50%;
+        }
+      }
+      
+      /* Touch action for better mobile performance */
+      * {
+        -webkit-tap-highlight-color: transparent;
+      }
+      
+      /* Safe area insets for iPhone */
+      @supports (padding-top: env(safe-area-inset-top)) {
+        .safe-top {
+          padding-top: env(safe-area-inset-top);
+        }
+        .safe-bottom {
+          padding-bottom: env(safe-area-inset-bottom);
+        }
       }
     </style>
   <script type="importmap">
