@@ -17,12 +17,12 @@ interface ScoreboardProps {
 }
 
 const StatBox: React.FC<{ title: string; value: string | number, color: string, icon?: string }> = ({ title, value, color, icon }) => (
-    <div className={`w-full p-1 md:p-4 rounded-lg md:rounded-xl shadow-lg border-b-2 md:border-b-8 ${color}`}>
-        <p className="text-sm md:text-xl font-bold text-white text-shadow-sm flex items-center justify-center gap-1 md:gap-2">
+    <div className={`w-full h-full min-h-16 md:min-h-24 p-1 md:p-4 rounded-lg md:rounded-xl shadow-lg border-b-2 md:border-b-8 ${color} flex flex-col justify-center items-center`}>
+        <p className="text-sm md:text-xl font-bold text-white text-shadow-sm flex items-center justify-center gap-1 md:gap-2 whitespace-nowrap">
             {icon && <span role="img" aria-hidden="true" className="text-xs md:text-base">{icon}</span>}
             {title}
         </p>
-        <p className="text-2xl md:text-5xl font-black text-white text-shadow-md">{value}</p>
+        <p className="text-2xl md:text-5xl font-black text-white text-shadow-md leading-none">{value}</p>
     </div>
 );
 
@@ -42,19 +42,14 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ score, level, movesLeft, onBack
                 </div>
             </div>
             
-            {/* Mobile: Side by side score and moves */}
-            <div className="flex gap-1 md:hidden">
-                <div className="flex-1">
+            {/* Score and moves - side by side on mobile, separate on desktop */}
+            <div className="flex gap-1 md:flex-col md:gap-4 items-stretch">
+                <div className="flex-1 md:flex-none">
                     <StatBox title={t('score')} value={score} color="bg-green-400 border-green-600" icon="⭐" />
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 md:flex-none">
                     <StatBox title={t('movesLeft')} value={movesLeft} color="bg-blue-400 border-blue-600" icon="✋" />
                 </div>
-            </div>
-            
-            {/* Desktop: Separate rows */}
-            <div className="hidden md:block">
-                <StatBox title={t('score')} value={score} color="bg-green-400 border-green-600" icon="⭐" />
             </div>
             
             <div>
@@ -65,10 +60,6 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ score, level, movesLeft, onBack
                         style={{ width: `${progress}%` }}
                     ></div>
                 </div>
-            </div>
-
-            <div className="hidden md:block">
-                <StatBox title={t('movesLeft')} value={movesLeft} color="bg-blue-400 border-blue-600" icon="✋" />
             </div>
             
             <div className="hidden md:flex justify-center items-center gap-2 md:gap-4 my-1 md:my-2">
