@@ -15,10 +15,26 @@ import { LanguageProvider, useLanguage } from './context/LanguageContext';
 type GameView = 'profile_selection' | 'menu' | 'game' | 'leaderboard';
 
 const Game: React.FC = () => {
-  const [view, setView] = useState<GameView>('profile_selection');
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
-  const [allProfiles, setAllProfiles] = useState<Profile[]>([]);
-  const [currentProfileId, setCurrentProfileId] = useState<string | null>(null);
+  // Load initial data synchronously to ensure game state is available
+  const [allProfiles, setAllProfiles] = useState<Profile[]>(() => {
+    const savedProfiles = localStorage.getItem('sweetSwapProfiles');
+    return savedProfiles ? JSON.parse(savedProfiles) : [];
+  });
+  
+  const [currentProfileId, setCurrentProfileId] = useState<string | null>(() => {
+    return localStorage.getItem('sweetSwapLastProfileId');
+  });
+  
+  const [view, setView] = useState<GameView>(() => {
+    const lastProfileId = localStorage.getItem('sweetSwapLastProfileId');
+    return lastProfileId ? 'menu' : 'profile_selection';
+  });
+  
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>(() => {
+    const savedLeaderboard = localStorage.getItem('sweetSwapLeaderboard');
+    return savedLeaderboard ? JSON.parse(savedLeaderboard) : [];
+  });
+  
   const [isAudioReady, setIsAudioReady] = useState(false);
   const [isMuted, setIsMuted] = useState(() => localStorage.getItem('sweetSwapMuted') === 'true');
   const { t } = useLanguage();
@@ -29,23 +45,6 @@ const Game: React.FC = () => {
     board, score, level, movesLeft, isGameOver, chainReactionCount, activeSpecialEffects,
     setIsGameOver, levelUp, setBoard, decrementMoves, resetGame,
   } = useGameLogic(currentProfile?.gameState);
-
-  // Load from localStorage on mount
-  useEffect(() => {
-    const savedProfiles = localStorage.getItem('sweetSwapProfiles');
-    if (savedProfiles) {
-      setAllProfiles(JSON.parse(savedProfiles));
-    }
-    const savedLeaderboard = localStorage.getItem('sweetSwapLeaderboard');
-    if (savedLeaderboard) {
-      setLeaderboard(JSON.parse(savedLeaderboard));
-    }
-    const lastProfileId = localStorage.getItem('sweetSwapLastProfileId');
-    if (lastProfileId) {
-        setCurrentProfileId(lastProfileId);
-        setView('menu');
-    }
-  }, []);
 
   // Save profiles to localStorage
   useEffect(() => {
@@ -228,8 +227,8 @@ const Game: React.FC = () => {
             return null;
         }
         return (
-          <div className="flex flex-col md:flex-row items-center justify-start md:justify-center gap-1 md:gap-8 p-1 md:p-4 min-h-screen w-full">
-            <div className="flex-shrink-0 w-full flex justify-center">
+          <div className="flex flex-col md:flex-row items-center justify-start md:justify-center gap-1 md:gap-4 p-1 md:p-4 min-h-screen w-full">
+            <div className="flex-shrink-0 w-full md:w-auto flex justify-center">
               <GameBoard 
                   board={board} 
                   setBoard={setBoard} 
