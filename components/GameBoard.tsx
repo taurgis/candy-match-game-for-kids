@@ -16,9 +16,9 @@ interface GameBoardProps {
 }
 
 const PIECE_SIZE = 56; // Desktop size
-const PIECE_SIZE_MOBILE = 32; // Even smaller for iPhone 7 height constraints
+const PIECE_SIZE_MOBILE = 40; // Bigger size for mobile now that we have more space
 const GAP_SIZE = 4; // Desktop gap
-const GAP_SIZE_MOBILE = 1; // Minimal gap for mobile
+const GAP_SIZE_MOBILE = 2; // Slightly bigger gap for mobile
 const TOTAL_PIECE_SIZE = PIECE_SIZE + GAP_SIZE;
 const TOTAL_PIECE_SIZE_MOBILE = PIECE_SIZE_MOBILE + GAP_SIZE_MOBILE;
 

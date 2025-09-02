@@ -227,7 +227,7 @@ const Game: React.FC = () => {
             return null;
         }
         return (
-          <div className="flex flex-col md:flex-row items-center justify-start md:justify-center gap-1 md:gap-4 p-1 md:p-4 min-h-screen w-full">
+          <div className="flex flex-col md:flex-row items-center justify-start md:justify-center gap-4 md:gap-4 p-1 md:p-4 min-h-screen w-full">
             <div className="flex-shrink-0 w-full md:w-auto flex justify-center">
               <GameBoard 
                   board={board} 
