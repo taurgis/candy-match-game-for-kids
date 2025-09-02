@@ -198,14 +198,6 @@ if (isMuted) return;
 - **Music changes**: Modify `musicData.ts` for new melodies, `musicPlayer.ts` for playback logic
 - **Effects processing**: Enhance `effects.ts` for new audio processing chains
 
-### Mobile Optimization Checklist
-- [ ] Test on actual mobile devices
-- [ ] Verify touch interactions work smoothly
-- [ ] Check text readability at small sizes
-- [ ] Ensure UI elements are properly sized for fingers
-- [ ] Test landscape and portrait orientations
-- [ ] Verify PWA install process
-
 ### Audio Enhancement Guidelines
 - **Happy/joyful** tone for kids
 - **Nursery rhyme** melodies for familiarity
