@@ -1,6 +1,11 @@
 # Sweet Swap Saga
 
+> **Note**: This game has been completely "vibe coded" using Gemini 2.5 and GitHub Copilot - showcasing the power of AI-assisted development!
+
 A delicious and colorful candy matching puzzle game for kids! Connect three or more candies to score points, clear levels, and get your name on the leaderboard. With infinite levels, the fun never stops!
+
+## 🎮 Play Now
+**[Play Sweet Swap Saga](https://taurgis.github.io/candy-match-game-for-kids/)**
 
  <!-- Placeholder - replace with actual gameplay gif if available -->
 
