@@ -228,8 +228,8 @@ const Game: React.FC = () => {
             return null;
         }
         return (
-          <div className="flex flex-col md:flex-row items-center justify-start md:justify-center gap-1 md:gap-8 p-1 md:p-4 min-h-screen">
-            <div className="flex-shrink-0">
+          <div className="flex flex-col md:flex-row items-center justify-start md:justify-center gap-1 md:gap-8 p-1 md:p-4 min-h-screen w-full">
+            <div className="flex-shrink-0 w-full flex justify-center">
               <GameBoard 
                   board={board} 
                   setBoard={setBoard} 
@@ -238,7 +238,7 @@ const Game: React.FC = () => {
                   activeSpecialEffects={activeSpecialEffects}
               />
             </div>
-            <div className="flex-shrink-0 w-full md:w-auto">
+            <div className="flex-shrink-0 w-full md:w-auto flex justify-center">
               <Scoreboard 
                 score={score} 
                 level={level} 
@@ -259,7 +259,7 @@ const Game: React.FC = () => {
     }
   };
 
-  const containerClass = "min-h-screen bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 flex items-start md:items-center justify-center p-1 md:p-4";
+  const containerClass = "min-h-screen bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 flex items-start md:items-center justify-center p-1 md:p-4 pb-safe";
 
   return (
     <div className={containerClass}>
