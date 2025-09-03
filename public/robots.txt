@@ -1,0 +1,32 @@
+User-agent: *
+Allow: /
+
+# Allow search engines to crawl the main game
+Allow: /index.html
+
+# Allow crawling of PWA manifest for app discovery
+Allow: /manifest.json
+
+# Allow crawling of game assets and icons
+Allow: /icon-*.png
+Allow: /favicon.ico
+
+# Disallow crawling of source files and build artifacts
+Disallow: /src/
+Disallow: /*.ts
+Disallow: /*.tsx
+Disallow: /*.js.map
+Disallow: /*.css.map
+
+# Allow offline page for PWA functionality
+Allow: /offline.html
+
+# Sitemap location
+Sitemap: https://taurgis.github.io/candy-match-game-for-kids/sitemap.xml
+
+# Additional metadata for gaming content
+# This helps search engines understand this is a kids' game
+# User-agent: Googlebot
+# Allow: /
+
+# Crawl-delay: 1
